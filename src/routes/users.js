@@ -8,18 +8,19 @@ const {
 } = require('../controllers/users')
 
 const {
-     postRequestValidations,
-     putRequestValidations,
-     getByIdValidations,
-     deleteValidations
+    postRequestValidations,
+    putRequestValidations,
+    getRequestByIdValidations,
+    deleteRequestValidations,
+    getAllRequestValidations
 } = require('../middlewares/users')
 
 const router = Router()
 
-router.get('/', getAllUsers)
+router.get('/', getAllRequestValidations, getAllUsers)
 router.post('/', postRequestValidations, createUser)
 router.put('/:id', putRequestValidations, updateUser)
-router.get('/:id', getByIdValidations, getById)
-router.delete('/:id', deleteValidations, deleteUser)
+router.get('/:id', getRequestByIdValidations, getById)
+router.delete('/:id', deleteRequestValidations, deleteUser)
 
 module.exports = router

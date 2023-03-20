@@ -1,8 +1,9 @@
 const { check } = require('express-validator')
 const AppError = require('../../errors/appError')
 const userService = require('../../services/userService')
-const { ROLES } = require('../../constants/index')
+const { ROLES, ADMIN_ROLE } = require('../../constants/index')
 const { validationResult } = require('../common')
+const { validJWT, hasRole } = require('../auth/')
 
 const _nameRequired = check('name', 'Name required').not().isEmpty()
 const _lastNameRequired = check('lastName', 'Last Name required').not().isEmpty()
@@ -52,6 +53,8 @@ const _idExist = check('id').custom(
 
 
 const postRequestValidations = [
+    validJWT,
+    hasRole(ADMIN_ROLE),
     _nameRequired,
     _lastNameRequired,
     _emailRequired,
@@ -64,6 +67,8 @@ const postRequestValidations = [
 ]
 
 const putRequestValidations = [
+    validJWT,
+    hasRole(ADMIN_ROLE),
     _idRequired,
     _idIsMongoDB,
     _idExist,
@@ -74,23 +79,32 @@ const putRequestValidations = [
     validationResult
 ]
 
-const getByIdValidations = [
+const getRequestByIdValidations = [
+    validJWT,
     _idRequired,
     _idIsMongoDB,
     _idExist,
     validationResult
 ]
 
-const deleteValidations = [
+const deleteRequestValidations = [
+    validJWT,
+    hasRole(ADMIN_ROLE),
     _idRequired,
     _idIsMongoDB,
     _idExist,
     validationResult
 ]
+
+const getAllRequestValidations = [
+    validJWT
+]
+
 
 module.exports = {
     postRequestValidations,
     putRequestValidations,
-    getByIdValidations,
-    deleteValidations
+    getRequestByIdValidations,
+    deleteRequestValidations,
+    getAllRequestValidations
 }
