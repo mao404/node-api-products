@@ -71,7 +71,7 @@ const getById = async (req, res, next) => {
  * @param {express.Request} req 
  * @param {express.Response} res
  */
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
     try {
         const { id } = req.params
         const user = await userService.remove(id)
